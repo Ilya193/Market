@@ -10,6 +10,7 @@ sealed class ReviewsUi {
         private val list: EventWrapper.State<List<ReviewUi>>
     ): ReviewsUi() {
         override fun map(communication: Communication<EventWrapper<List<ReviewUi>>>) {
+            //list.setState(false)
             communication.map(list)
         }
     }

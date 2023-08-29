@@ -11,15 +11,18 @@ sealed class ReviewsDomain : ToMapper<ReviewsUi> {
     data class Base(
         private val list: List<ReviewDomain>
     ): ReviewsDomain() {
-        override fun map(): ReviewsUi = ReviewsUi.Base(EventWrapper.State(list.map { it.map() }))
+        override fun map(): ReviewsUi {
+            return if (list.isEmpty()) ReviewsUi.Base(EventWrapper.State(listOf(ReviewUi.Empty("Стань тем, кто первым напишет отзыв"))))
+            else ReviewsUi.Base(EventWrapper.State(list.map { it.map() }))
+        }
     }
 
     data class Fail(
         private val e: Exception
     ): ReviewsDomain() {
         override fun map(): ReviewsUi {
-            if (e is UnknownHostException) return ReviewsUi.Base(EventWrapper.State(listOf(ReviewUi.Fail("No connection"))))
-            return ReviewsUi.Base(EventWrapper.State(listOf(ReviewUi.Fail("Error has occurred"))))
+            if (e is UnknownHostException) return ReviewsUi.Base(EventWrapper.State(listOf(ReviewUi.Fail("Нет подключения"))))
+            return ReviewsUi.Base(EventWrapper.State(listOf(ReviewUi.Fail("Произошла ошибка"))))
         }
     }
 }

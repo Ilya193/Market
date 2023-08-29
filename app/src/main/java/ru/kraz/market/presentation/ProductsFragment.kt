@@ -10,7 +10,7 @@ import ru.kraz.market.R
 import ru.kraz.market.databinding.FragmentProductsBinding
 
 
-class ProductsFragment : Fragment(), OnClickProductListener {
+class ProductsFragment : Fragment(), OnClickListener {
     private var _binding: FragmentProductsBinding? = null
     private val binding: FragmentProductsBinding
         get() = _binding!!

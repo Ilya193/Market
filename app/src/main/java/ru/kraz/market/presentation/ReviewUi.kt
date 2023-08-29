@@ -1,7 +1,6 @@
 package ru.kraz.market.presentation
 
 import ru.kraz.market.core.Comparing
-import ru.kraz.market.core.EventWrapper
 
 sealed class ReviewUi(
     open val id: Int = -1,
@@ -21,4 +20,6 @@ sealed class ReviewUi(
     }
 
     data class Fail(val e: String) : ReviewUi(textReview = e)
+
+    data class Empty(val text: String): ReviewUi(textReview = text)
 }

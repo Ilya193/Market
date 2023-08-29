@@ -13,12 +13,12 @@ import ru.kraz.market.R
 import ru.kraz.market.core.log
 import ru.kraz.market.databinding.FragmentProductBinding
 
-class ProductFragment : Fragment() {
+class ProductFragment : Fragment(), OnClickListener {
     private var _binding: FragmentProductBinding? = null
     private val binding: FragmentProductBinding
         get() = _binding!!
 
-    private val adapter = ReviewsAdapter()
+    private val adapter = ReviewsAdapter(this)
 
     private val viewModel: ProductsViewModel by sharedViewModel()
 
@@ -66,12 +66,19 @@ class ProductFragment : Fragment() {
 
         viewModel.observeReview(viewLifecycleOwner) { data ->
             data.getContentOrNot { list ->
-                binding.pbFetch.visibility = View.GONE
+                if (list.isEmpty()) adapter.submitList(listOf())
                 adapter.submitList(list)
+
+                binding.pbFetch.visibility = View.GONE
+
             }
         }
 
         viewModel.fetchReviews()
+    }
+
+    override fun onClick() {
+
     }
 
     override fun onDestroyView() {

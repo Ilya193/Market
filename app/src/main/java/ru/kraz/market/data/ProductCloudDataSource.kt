@@ -2,6 +2,7 @@ package ru.kraz.market.data
 
 interface ProductCloudDataSource {
     suspend fun fetchProducts(): List<ProductCloud>
+    suspend fun fetchReviews(productId: Int): List<ReviewCloud>
     suspend fun sendReview(textReview: String, productId: Int): List<ReviewCloud>
 
     class Base(
@@ -11,8 +12,11 @@ interface ProductCloudDataSource {
             return productService.fetchProducts()
         }
 
-        override suspend fun sendReview(textReview: String, productId: Int): List<ReviewCloud> {
+        override suspend fun fetchReviews(productId: Int): List<ReviewCloud> {
+            return productService.fetchReviews(productId)
+        }
 
+        override suspend fun sendReview(textReview: String, productId: Int): List<ReviewCloud> {
             return productService.sendReview(SaveReviewCloud(textReview, productId))
         }
     }

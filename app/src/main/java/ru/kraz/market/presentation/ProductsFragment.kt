@@ -6,10 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.kraz.market.R
-import ru.kraz.market.core.log
-import ru.kraz.market.databinding.FragmentProductBinding
 import ru.kraz.market.databinding.FragmentProductsBinding
 
 
@@ -37,6 +34,8 @@ class ProductsFragment : Fragment(), OnClickProductListener {
 
         settingRecyclerView()
         settingViewModel()
+
+        binding.pbFetch.visibility = View.VISIBLE
     }
 
     private fun settingRecyclerView() {
@@ -46,7 +45,8 @@ class ProductsFragment : Fragment(), OnClickProductListener {
 
     private fun settingViewModel() {
         viewModel.fetchProducts()
-        viewModel.observe(viewLifecycleOwner) {
+        viewModel.observeProduct(viewLifecycleOwner) {
+            binding.pbFetch.visibility = View.GONE
             adapter.submitList(it)
         }
     }
@@ -58,6 +58,10 @@ class ProductsFragment : Fragment(), OnClickProductListener {
             .replace(R.id.fragmentContainer, ProductFragment.newInstance())
             .addToBackStack(null)
             .commit()
+    }
+
+    override fun onClick() {
+        viewModel.fetchProducts()
     }
 
     override fun onDestroyView() {

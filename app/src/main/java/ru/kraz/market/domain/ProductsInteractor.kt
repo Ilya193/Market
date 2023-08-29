@@ -6,6 +6,7 @@ import ru.kraz.market.data.ProductRepository
 
 interface ProductsInteractor {
     suspend fun fetchProduct(): Flow<ProductsDomain>
+    suspend fun fetchReviews(productId: Int): Flow<ReviewsDomain>
     suspend fun sendReview(textReview: String, productId: Int): Flow<ReviewsDomain>
 
     class Base(
@@ -13,6 +14,12 @@ interface ProductsInteractor {
     ) : ProductsInteractor {
         override suspend fun fetchProduct(): Flow<ProductsDomain> = flow {
             productRepository.fetchProducts().collect {
+                emit(it.map())
+            }
+        }
+
+        override suspend fun fetchReviews(productId: Int): Flow<ReviewsDomain> = flow {
+            productRepository.fetchReviews(productId).collect {
                 emit(it.map())
             }
         }

@@ -1,0 +1,65 @@
+package ru.kraz.market.presentation
+
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import com.bumptech.glide.Glide
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.kraz.market.R
+import ru.kraz.market.core.log
+import ru.kraz.market.databinding.FragmentProductBinding
+
+class ProductFragment : Fragment() {
+    private var _binding: FragmentProductBinding? = null
+    private val binding: FragmentProductBinding
+        get() = _binding!!
+
+    private val adapter = ReviewsAdapter()
+
+    private val viewModel: ProductsViewModel by sharedViewModel()
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
+        _binding = FragmentProductBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.currentProduct.observe(viewLifecycleOwner) {
+            Glide.with(requireContext())
+                .load(it.url)
+                .into(binding.image)
+
+            binding.tvName.text = it.name
+            binding.tvDescription.text = it.description
+        }
+
+        viewModel.observeReview(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
+
+        binding.icSend.setOnClickListener {
+            viewModel.sendReview(binding.etReview.text.toString())
+        }
+
+        binding.rvReviews.adapter = adapter
+        binding.rvReviews.setHasFixedSize(true)
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
+
+    companion object {
+        fun newInstance() =
+            ProductFragment()
+    }
+}

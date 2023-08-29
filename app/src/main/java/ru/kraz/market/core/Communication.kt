@@ -8,7 +8,7 @@ interface Communication<T> {
     fun map(data: T)
     fun observe(lifecycleOwner: LifecycleOwner, observer: Observer<T>)
 
-    class Base<T : Any> : Communication<T> {
+    open class Base<T : Any> : Communication<T> {
         private val liveData = MutableLiveData<T>()
 
         override fun map(data: T) {

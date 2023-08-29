@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.bumptech.glide.Glide
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -31,7 +32,29 @@ class ProductFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        settingRecyclerView()
+        settingViewModel()
+        settingClickListener()
 
+        binding.pbFetch.visibility = View.VISIBLE
+    }
+
+    private fun settingClickListener() {
+        binding.icSend.setOnClickListener {
+            val textReview = binding.etReview.text.toString()
+            if (textReview.isNotEmpty()) {
+                viewModel.sendReview(textReview)
+                binding.etReview.setText("")
+            }
+        }
+    }
+
+    private fun settingRecyclerView() {
+        binding.rvReviews.adapter = adapter
+        binding.rvReviews.setHasFixedSize(true)
+    }
+
+    private fun settingViewModel() {
         viewModel.currentProduct.observe(viewLifecycleOwner) {
             Glide.with(requireContext())
                 .load(it.url)
@@ -41,16 +64,14 @@ class ProductFragment : Fragment() {
             binding.tvDescription.text = it.description
         }
 
-        viewModel.observeReview(viewLifecycleOwner) {
-            adapter.submitList(it)
+        viewModel.observeReview(viewLifecycleOwner) { data ->
+            data.getContentOrNot { list ->
+                binding.pbFetch.visibility = View.GONE
+                adapter.submitList(list)
+            }
         }
 
-        binding.icSend.setOnClickListener {
-            viewModel.sendReview(binding.etReview.text.toString())
-        }
-
-        binding.rvReviews.adapter = adapter
-        binding.rvReviews.setHasFixedSize(true)
+        viewModel.fetchReviews()
     }
 
     override fun onDestroyView() {

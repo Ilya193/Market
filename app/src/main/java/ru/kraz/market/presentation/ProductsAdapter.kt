@@ -42,6 +42,10 @@ class ProductsAdapter(
         BaseViewHolder<ProductUi>(view.root) {
         override fun bind(item: ProductUi) {
             view.tvName.text = item.name
+
+            view.btnRetry.setOnClickListener {
+                onClickListener.onClick()
+            }
         }
     }
 

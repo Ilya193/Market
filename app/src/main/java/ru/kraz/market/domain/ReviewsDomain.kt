@@ -12,7 +12,7 @@ sealed class ReviewsDomain : ToMapper<ReviewsUi> {
         private val list: List<ReviewDomain>
     ): ReviewsDomain() {
         override fun map(): ReviewsUi {
-            return if (list.isEmpty()) ReviewsUi.Base(EventWrapper.State(listOf(ReviewUi.Empty("Стань тем, кто первым напишет отзыв"))))
+            return if (list.isEmpty()) ReviewsUi.Base(EventWrapper.State(listOf(ReviewUi.Empty("Стань первым, кто напишет отзыв"))))
             else ReviewsUi.Base(EventWrapper.State(list.map { it.map() }))
         }
     }

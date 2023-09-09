@@ -8,6 +8,4 @@ data class ReviewDomain(
     val id: Int,
     val textReview: String,
     val productId: Int,
-): ToMapper<ReviewUi> {
-    override fun map(): ReviewUi = ReviewUi.Base(id, textReview, productId)
-}
+)

@@ -5,9 +5,9 @@ import ru.kraz.market.presentation.ProductUi
 import ru.kraz.market.presentation.ReviewUi
 
 data class ReviewDomain(
-    private val id: Int,
-    private val textReview: String,
-    private val productId: Int,
+    val id: Int,
+    val textReview: String,
+    val productId: Int,
 ): ToMapper<ReviewUi> {
     override fun map(): ReviewUi = ReviewUi.Base(id, textReview, productId)
 }

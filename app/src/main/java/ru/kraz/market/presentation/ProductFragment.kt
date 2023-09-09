@@ -64,13 +64,11 @@ class ProductFragment : Fragment(), OnClickListener {
             binding.tvDescription.text = it.description
         }
 
-        viewModel.observeReview(viewLifecycleOwner) { data ->
+        viewModel.resultReviews.observe(viewLifecycleOwner) { data ->
             data.getContentOrNot { list ->
                 if (list.isEmpty()) adapter.submitList(listOf())
                 adapter.submitList(list)
-
                 binding.pbFetch.visibility = View.GONE
-
             }
         }
 

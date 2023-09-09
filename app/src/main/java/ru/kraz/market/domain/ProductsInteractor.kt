@@ -1,33 +1,23 @@
 package ru.kraz.market.domain
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import ru.kraz.market.data.ProductRepository
-
 interface ProductsInteractor {
-    suspend fun fetchProduct(): Flow<ProductsDomain>
-    suspend fun fetchReviews(productId: Int): Flow<ReviewsDomain>
-    suspend fun sendReview(textReview: String, productId: Int): Flow<ReviewsDomain>
+    suspend fun fetchProduct(): Result<List<ProductDomain>>
+    suspend fun fetchReviews(productId: Int): Result<List<ReviewDomain>>
+    suspend fun sendReview(textReview: String, productId: Int): Result<List<ReviewDomain>>
 
     class Base(
-        private val productRepository: ProductRepository
+        private val productsRepository: ProductsRepository
     ) : ProductsInteractor {
-        override suspend fun fetchProduct(): Flow<ProductsDomain> = flow {
-            productRepository.fetchProducts().collect {
-                emit(it.map())
-            }
+        override suspend fun fetchProduct(): Result<List<ProductDomain>> {
+            return productsRepository.fetchProducts()
         }
 
-        override suspend fun fetchReviews(productId: Int): Flow<ReviewsDomain> = flow {
-            productRepository.fetchReviews(productId).collect {
-                emit(it.map())
-            }
+        override suspend fun fetchReviews(productId: Int): Result<List<ReviewDomain>> {
+            return productsRepository.fetchReviews(productId)
         }
 
-        override suspend fun sendReview(textReview: String, productId: Int): Flow<ReviewsDomain> = flow {
-            productRepository.sendReview(textReview, productId).collect {
-                emit(it.map())
-            }
+        override suspend fun sendReview(textReview: String, productId: Int): Result<List<ReviewDomain>> {
+            return productsRepository.sendReview(textReview, productId)
         }
     }
 

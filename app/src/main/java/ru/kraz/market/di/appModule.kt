@@ -5,47 +5,55 @@ import org.koin.dsl.module
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.kraz.market.data.ProductCloudDataSource
-import ru.kraz.market.data.ProductRepository
-import ru.kraz.market.data.ProductService
+import ru.kraz.market.data.ProductsCloudDataSource
+import ru.kraz.market.data.ProductsRepositoryImpl
+import ru.kraz.market.domain.ProductsRepository
+import ru.kraz.market.data.ProductsService
 import ru.kraz.market.domain.ProductsInteractor
-import ru.kraz.market.presentation.ProductCommunication
+import ru.kraz.market.presentation.BaseToProductUiMapper
+import ru.kraz.market.presentation.BaseToReviewUiMapper
 import ru.kraz.market.presentation.ProductsViewModel
-import ru.kraz.market.presentation.ReviewCommunication
 
 val appModule = module {
     factory<Converter.Factory> {
         GsonConverterFactory.create()
     }
 
-    single<ProductService> {
+    single<ProductsService> {
         Retrofit.Builder()
-            .baseUrl("http://192.168.1.5:8080/")
+            .baseUrl("http://192.168.1.4:8080/")
             .addConverterFactory(get())
             .build()
-            .create(ProductService::class.java)
+            .create(ProductsService::class.java)
     }
 
-    factory<ProductCloudDataSource> {
-        ProductCloudDataSource.Base(get())
+    factory<ProductsCloudDataSource> {
+        ProductsCloudDataSource.Base(get())
     }
 
-    factory<ProductRepository> {
-        ProductRepository.Base(get())
+    factory<ProductsRepository> {
+        ProductsRepositoryImpl(get())
     }
 
     factory<ProductsInteractor> {
         ProductsInteractor.Base(get())
     }
 
-    factory<ProductCommunication> {
-        ProductCommunication()
+    /*factory<ToUiMapper<ProductDomain, ProductUi.Base>> {
+        BaseToProductUiMapper()
     }
 
-    factory<ReviewCommunication> {
-        ReviewCommunication()
+    factory<ToUiMapper<ReviewDomain, ReviewUi.Base>> {
+        BaseToReviewUiMapper()
+    }*/
+
+    factory<BaseToProductUiMapper> {
+        BaseToProductUiMapper()
     }
 
+    factory<BaseToReviewUiMapper> {
+        BaseToReviewUiMapper()
+    }
 
     viewModel<ProductsViewModel> {
         ProductsViewModel(get(), get(), get())

@@ -45,7 +45,7 @@ class ProductsFragment : Fragment(), OnClickListener {
 
     private fun settingViewModel() {
         viewModel.fetchProducts()
-        viewModel.observeProduct(viewLifecycleOwner) {
+        viewModel.resultProducts.observe(viewLifecycleOwner) {
             binding.pbFetch.visibility = View.GONE
             adapter.submitList(it)
         }

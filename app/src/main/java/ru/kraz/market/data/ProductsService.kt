@@ -5,7 +5,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
 
-interface ProductService {
+interface ProductsService {
     @GET("products")
     suspend fun fetchProducts(): List<ProductCloud>
 

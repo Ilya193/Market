@@ -6,17 +6,16 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import ru.kraz.market.core.BaseAdapter
 import ru.kraz.market.core.BaseViewHolder
-import ru.kraz.market.core.log
-import ru.kraz.market.databinding.ProductFailLayoutBinding
+import ru.kraz.market.databinding.FailLayoutBinding
 import ru.kraz.market.databinding.ProductLayoutBinding
 
 class ProductsAdapter(
     private val context: Context,
-    private val onClickListener: OnClickProductListener
+    private val onClickListener: OnClickListener,
 ) : BaseAdapter<ProductUi, BaseViewHolder<ProductUi>>() {
 
     override fun getItemViewType(position: Int): Int {
-        return when(getItem(position)) {
+        return when (getItem(position)) {
             is ProductUi.Base -> PRODUCT_VIEW_TYPE
             else -> FAIL_VIEW_TYPE
         }
@@ -38,7 +37,7 @@ class ProductsAdapter(
         }
     }
 
-    inner class FailProductViewHolder(private val view: ProductFailLayoutBinding) :
+    inner class FailViewHolder(private val view: FailLayoutBinding) :
         BaseViewHolder<ProductUi>(view.root) {
         override fun bind(item: ProductUi) {
             view.tvName.text = item.name
@@ -50,7 +49,7 @@ class ProductsAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<ProductUi> {
-        return when(viewType) {
+        return when (viewType) {
             PRODUCT_VIEW_TYPE -> BaseProductViewHolder(
                 ProductLayoutBinding.inflate(
                     LayoutInflater.from(parent.context),
@@ -59,8 +58,8 @@ class ProductsAdapter(
                 )
             )
 
-            else -> FailProductViewHolder(
-                ProductFailLayoutBinding.inflate(
+            else -> FailViewHolder(
+                FailLayoutBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false

@@ -2,7 +2,8 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Market" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <item name="android:statusBarColor">@color/statusBarColor</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
     <style name="Theme.Market" parent="Base.Theme.Market" />

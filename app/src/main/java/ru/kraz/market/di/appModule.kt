@@ -21,7 +21,7 @@ val appModule = module {
 
     single<ProductsService> {
         Retrofit.Builder()
-            .baseUrl("http://192.168.1.4:8080/")
+            .baseUrl("http://192.168.1.2:8080/")
             .addConverterFactory(get())
             .build()
             .create(ProductsService::class.java)

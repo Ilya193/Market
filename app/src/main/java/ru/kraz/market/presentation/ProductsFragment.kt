@@ -33,14 +33,12 @@ class ProductsFragment : Fragment(), OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        //adapter = ProductsAdapter(requireContext(), this)
-
         settingRecyclerView()
         settingViewModel()
     }
 
     private fun settingRecyclerView() {
+        //adapter = ProductsAdapter(requireContext(), this)
         //binding.rvProducts.adapter = adapter
         adapter = simpleAdapter<ProductUi, ProductLayoutBinding> {
             areItemsSame = {old, new ->

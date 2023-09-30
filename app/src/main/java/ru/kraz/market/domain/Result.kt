@@ -7,7 +7,7 @@ sealed class Result<out T> {
     ): Result<T>()
 
     data class Error(
-        val e: Exception
+        val e: ErrorType
     ): Result<Nothing>()
 
 }

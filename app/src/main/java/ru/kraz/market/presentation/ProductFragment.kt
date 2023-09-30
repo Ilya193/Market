@@ -13,12 +13,12 @@ import ru.kraz.market.R
 import ru.kraz.market.core.log
 import ru.kraz.market.databinding.FragmentProductBinding
 
-class ProductFragment : Fragment(), OnClickListener {
+class ProductFragment : Fragment() {
     private var _binding: FragmentProductBinding? = null
     private val binding: FragmentProductBinding
         get() = _binding!!
 
-    private val adapter = ReviewsAdapter(this)
+    private lateinit var adapter: ReviewsAdapter
 
     private val viewModel: ProductsViewModel by sharedViewModel()
 
@@ -35,8 +35,6 @@ class ProductFragment : Fragment(), OnClickListener {
         settingRecyclerView()
         settingViewModel()
         settingClickListener()
-
-        binding.pbFetch.visibility = View.VISIBLE
     }
 
     private fun settingClickListener() {
@@ -50,6 +48,7 @@ class ProductFragment : Fragment(), OnClickListener {
     }
 
     private fun settingRecyclerView() {
+        adapter = ReviewsAdapter(requireContext())
         binding.rvReviews.adapter = adapter
         binding.rvReviews.setHasFixedSize(true)
     }
@@ -65,18 +64,51 @@ class ProductFragment : Fragment(), OnClickListener {
         }
 
         viewModel.resultReviews.observe(viewLifecycleOwner) { data ->
-            data.getContentOrNot { list ->
-                if (list.isEmpty()) adapter.submitList(listOf())
-                adapter.submitList(list)
-                binding.pbFetch.visibility = View.GONE
+            data.getContentOrNot {
+                when (it) {
+                    is ReviewUiState.Success -> renderSuccess(it)
+                    is ReviewUiState.Error -> renderError(it)
+                    is ReviewUiState.Loading -> renderLoading()
+                }
             }
         }
 
         viewModel.fetchReviews()
     }
 
-    override fun onClick() {
+    private fun renderSuccess(state: ReviewUiState.Success) {
+        binding.apply {
+            loading.visibility = View.GONE
+            containerError.visibility = View.GONE
 
+            mainContent.visibility = View.VISIBLE
+            container.visibility = View.VISIBLE
+        }
+
+        adapter.submitList(state.data)
+    }
+
+    private fun renderError(state: ReviewUiState.Error) {
+        binding.apply {
+            loading.visibility = View.GONE
+            mainContent.visibility = View.GONE
+            container.visibility = View.GONE
+
+            tvError.text = state.message
+            containerError.visibility = View.VISIBLE
+            btnRetry.setOnClickListener {
+                viewModel.fetchReviews()
+            }
+        }
+    }
+
+    private fun renderLoading() {
+        binding.apply {
+            mainContent.visibility = View.GONE
+            containerError.visibility = View.GONE
+
+            loading.visibility = View.VISIBLE
+        }
     }
 
     override fun onDestroyView() {

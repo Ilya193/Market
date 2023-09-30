@@ -21,6 +21,12 @@ sealed class ProductUi(
         override fun same(item: ProductUi): Boolean = item is Base && id == item.id
         override fun sameContent(item: ProductUi): Boolean = this == item
     }
+}
 
-    data class Fail(val e: String) : ProductUi(name = e)
+sealed class ProductUiState {
+    data class Success(val data: List<ProductUi>) : ProductUiState()
+
+    data class Error(val message: String) : ProductUiState()
+
+    object Loading : ProductUiState()
 }

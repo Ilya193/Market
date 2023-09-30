@@ -34,8 +34,6 @@ class ProductsFragment : Fragment(), OnClickListener {
 
         settingRecyclerView()
         settingViewModel()
-
-        binding.pbFetch.visibility = View.VISIBLE
     }
 
     private fun settingRecyclerView() {
@@ -46,9 +44,39 @@ class ProductsFragment : Fragment(), OnClickListener {
     private fun settingViewModel() {
         viewModel.fetchProducts()
         viewModel.resultProducts.observe(viewLifecycleOwner) {
-            binding.pbFetch.visibility = View.GONE
-            adapter.submitList(it)
+            when (it) {
+                is ProductUiState.Success -> renderSuccess(it)
+                is ProductUiState.Error -> renderError(it)
+                is ProductUiState.Loading -> renderLoading()
+            }
         }
+    }
+
+
+    private fun renderSuccess(state: ProductUiState.Success) {
+        binding.containerError.visibility = View.GONE
+        binding.loading.visibility = View.GONE
+
+        binding.rvProducts.visibility = View.VISIBLE
+        adapter.submitList(state.data)
+    }
+
+    private fun renderError(state: ProductUiState.Error) {
+        binding.rvProducts.visibility = View.GONE
+        binding.loading.visibility = View.GONE
+
+        binding.containerError.visibility = View.VISIBLE
+        binding.tvError.text = state.message
+        binding.btnRetry.setOnClickListener {
+            viewModel.fetchProducts()
+        }
+    }
+
+    private fun renderLoading() {
+        binding.rvProducts.visibility = View.GONE
+        binding.containerError.visibility = View.GONE
+
+        binding.loading.visibility = View.VISIBLE
     }
 
     override fun onClick(product: ProductUi) {
@@ -67,10 +95,5 @@ class ProductsFragment : Fragment(), OnClickListener {
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
-    }
-
-    companion object {
-        fun newInstance() =
-            ProductsFragment()
     }
 }

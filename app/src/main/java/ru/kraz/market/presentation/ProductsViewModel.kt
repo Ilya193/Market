@@ -13,35 +13,34 @@ import ru.kraz.market.domain.ReviewDomain
 
 class ProductsViewModel(
     private val productsInteractor: ProductsInteractor,
-    /*private val productUiMapper: ToUiMapper<ProductDomain, ProductUi.Base>,
-    private val reviewUiMapper: ToUiMapper<ReviewDomain, ReviewUi.Base>,*/
     private val productUiMapper: BaseToProductUiMapper,
     private val reviewUiMapper: BaseToReviewUiMapper,
+    private val resourceProvider: ResourceProvider
 ) : ViewModel() {
 
     private val _currentProduct = MutableLiveData<ProductUi>()
     val currentProduct: LiveData<ProductUi>
         get() = _currentProduct
 
-    private val _resultProducts = MutableLiveData<List<ProductUi>>()
-    val resultProducts: LiveData<List<ProductUi>> get() = _resultProducts
+    private val _resultProducts = MutableLiveData<ProductUiState>()
+    val resultProducts: LiveData<ProductUiState> get() = _resultProducts
 
 
-    private val _resultReviews = MutableLiveData<EventWrapper<List<ReviewUi>>>()
-    val resultReviews: LiveData<EventWrapper<List<ReviewUi>>> get() = _resultReviews
-    private val event = EventWrapper.Change(listOf<ReviewUi>())
+    private val _resultReviews = MutableLiveData<EventWrapper<ReviewUiState>>()
+    val resultReviews: LiveData<EventWrapper<ReviewUiState>> get() = _resultReviews
 
     fun fetchProducts() = viewModelScope.launch(Dispatchers.IO) {
+        _resultProducts.postValue(ProductUiState.Loading)
         when (val res = productsInteractor.fetchProduct()) {
             is Result.Success -> {
                 val products = res.data.map { product ->
                     productUiMapper.map(product)
                 }
-                _resultProducts.postValue(products)
+                _resultProducts.postValue(ProductUiState.Success(products))
             }
 
             is Result.Error -> {
-                _resultProducts.postValue(listOf(ProductUi.Fail(res.e.message ?: "Error")))
+                _resultProducts.postValue(ProductUiState.Error(resourceProvider.getString(res.e)))
             }
         }
     }
@@ -54,6 +53,7 @@ class ProductsViewModel(
     }
 
     fun fetchReviews() = viewModelScope.launch(Dispatchers.IO) {
+        _resultReviews.postValue(EventWrapper.Single(ReviewUiState.Loading))
         _currentProduct.value?.let {
             val res = productsInteractor.fetchReviews(it.id)
             mapResultReview(res)
@@ -67,16 +67,24 @@ class ProductsViewModel(
     private fun mapResultReview(result: Result<List<ReviewDomain>>) {
         when (result) {
             is Result.Success -> {
-                val reviews = result.data.map { review ->
-                    reviewUiMapper.map(review)
-                }
-                event.setValue(reviews)
-                _resultReviews.postValue(event)
+/*                val list = mutableListOf<ReviewUi>()
+                currentProduct.value?.let {
+                    list.add(ReviewUi.Image(it.url))
+                    list.add(ReviewUi.Title(it.name))
+                    list.add(ReviewUi.Text(it.description))
+                    list.add(ReviewUi.Delimiter)
+                    list.add(ReviewUi.Section("Отзывы"))
+                }*/
+                val data = result.data
+                val reviews =
+                    if (data.isEmpty()) listOf(ReviewUi.Empty) else result.data.map { review ->
+                        reviewUiMapper.map(review)
+                    }
+                _resultReviews.postValue(EventWrapper.Single(ReviewUiState.Success(/*list + */reviews)))
             }
 
             is Result.Error -> {
-                event.setValue(listOf(ReviewUi.Fail(result.e.message ?: "Error")))
-                _resultReviews.postValue(event)
+                _resultReviews.postValue(EventWrapper.Single(ReviewUiState.Error(resourceProvider.getString(result.e))))
             }
         }
     }

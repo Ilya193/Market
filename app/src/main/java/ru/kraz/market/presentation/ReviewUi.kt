@@ -4,7 +4,7 @@ import ru.kraz.market.core.Comparing
 
 sealed class ReviewUi(
     open val id: Int = -1,
-    open val textReview: String,
+    open val textReview: String = "",
     open val productId: Int = -1,
 ): Comparing<ReviewUi> {
     override fun same(item: ReviewUi): Boolean = false
@@ -19,7 +19,32 @@ sealed class ReviewUi(
         override fun sameContent(item: ReviewUi): Boolean = this == item
     }
 
-    data class Fail(val e: String) : ReviewUi(textReview = e)
+/*    data class Image(
+        val url: String
+    ) : ReviewUi()
 
-    data class Empty(val text: String): ReviewUi(textReview = text)
+    data class Title(
+        val text: String
+    ) : ReviewUi(textReview = text)
+
+    data class Text(
+        val text: String
+    ) : ReviewUi(textReview = text)
+
+    data class Section(
+        val text: String
+    ) : ReviewUi(textReview = text)
+
+    object Delimiter : ReviewUi()*/
+
+    object Empty: ReviewUi()
+}
+
+sealed class ReviewUiState {
+
+    data class Success(val data: List<ReviewUi>) : ReviewUiState()
+
+    data class Error(val message: String) : ReviewUiState()
+
+    object Loading : ReviewUiState()
 }

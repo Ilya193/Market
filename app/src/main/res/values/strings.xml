@@ -6,4 +6,7 @@
     <string name="send_review">Оставить отзыв</string>
     <string name="reviews">Отзывы</string>
     <string name="firt_review">Стань первым, кто оставит отзыв</string>
+    <string name="no_connection">Нет подключения к интернету</string>
+    <string name="service_unavailable">Сервер недоступен</string>
+    <string name="something_went_wrong">Произошла ошибка</string>
 </resources>

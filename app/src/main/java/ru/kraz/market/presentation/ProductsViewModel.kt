@@ -13,10 +13,9 @@ import ru.kraz.market.domain.ReviewDomain
 
 class ProductsViewModel(
     private val productsInteractor: ProductsInteractor,
-    /*private val productUiMapper: ToUiMapper<ProductDomain, ProductUi.Base>,
-    private val reviewUiMapper: ToUiMapper<ReviewDomain, ReviewUi.Base>,*/
     private val productUiMapper: BaseToProductUiMapper,
     private val reviewUiMapper: BaseToReviewUiMapper,
+    private val resourceProvider: ResourceProvider
 ) : ViewModel() {
 
     private val _currentProduct = MutableLiveData<ProductUi>()
@@ -31,6 +30,7 @@ class ProductsViewModel(
     val resultReviews: LiveData<EventWrapper<ReviewUiState>> get() = _resultReviews
 
     fun fetchProducts() = viewModelScope.launch(Dispatchers.IO) {
+        _resultProducts.postValue(ProductUiState.Loading)
         when (val res = productsInteractor.fetchProduct()) {
             is Result.Success -> {
                 val products = res.data.map { product ->
@@ -40,7 +40,7 @@ class ProductsViewModel(
             }
 
             is Result.Error -> {
-                _resultProducts.postValue(ProductUiState.Error(res.e.message ?: "Error"))
+                _resultProducts.postValue(ProductUiState.Error(resourceProvider.getString(res.e)))
             }
         }
     }
@@ -84,7 +84,7 @@ class ProductsViewModel(
             }
 
             is Result.Error -> {
-                _resultReviews.postValue(EventWrapper.Single(ReviewUiState.Error(result.e.message ?: "Error")))
+                _resultReviews.postValue(EventWrapper.Single(ReviewUiState.Error(resourceProvider.getString(result.e))))
             }
         }
     }

@@ -82,6 +82,7 @@ class ProductFragment : Fragment() {
             containerError.visibility = View.GONE
 
             mainContent.visibility = View.VISIBLE
+            container.visibility = View.VISIBLE
         }
 
         adapter.submitList(state.data)
@@ -91,6 +92,7 @@ class ProductFragment : Fragment() {
         binding.apply {
             loading.visibility = View.GONE
             mainContent.visibility = View.GONE
+            container.visibility = View.GONE
 
             tvError.text = state.message
             containerError.visibility = View.VISIBLE

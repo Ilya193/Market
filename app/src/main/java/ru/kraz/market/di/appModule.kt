@@ -13,6 +13,8 @@ import ru.kraz.market.domain.ProductsInteractor
 import ru.kraz.market.presentation.BaseToProductUiMapper
 import ru.kraz.market.presentation.BaseToReviewUiMapper
 import ru.kraz.market.presentation.ProductsViewModel
+import ru.kraz.market.presentation.ResourceProvider
+import ru.kraz.market.presentation.ResourceProviderImpl
 
 val appModule = module {
     factory<Converter.Factory> {
@@ -55,7 +57,11 @@ val appModule = module {
         BaseToReviewUiMapper()
     }
 
+    factory<ResourceProvider> {
+        ResourceProviderImpl(get())
+    }
+
     viewModel<ProductsViewModel> {
-        ProductsViewModel(get(), get(), get())
+        ProductsViewModel(get(), get(), get(), get())
     }
 }

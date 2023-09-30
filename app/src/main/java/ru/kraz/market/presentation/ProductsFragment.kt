@@ -83,6 +83,12 @@ class ProductsFragment : Fragment(), OnClickListener {
         viewModel.setCurrentProduct(product)
 
         parentFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.anim.slide_in,
+                R.anim.fade_out,
+                R.anim.fade_in,
+                R.anim.slide_out
+            )
             .replace(R.id.fragmentContainer, ProductFragment.newInstance())
             .addToBackStack(null)
             .commit()

@@ -1,16 +1,12 @@
 package ru.kraz.market.presentation
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.kraz.market.R
-import ru.kraz.market.core.log
 import ru.kraz.market.databinding.FragmentProductBinding
 
 class ProductFragment : Fragment() {
@@ -18,7 +14,9 @@ class ProductFragment : Fragment() {
     private val binding: FragmentProductBinding
         get() = _binding!!
 
-    private lateinit var adapter: ReviewsAdapter
+    private val adapter: ReviewsAdapter by lazy {
+        ReviewsAdapter(requireContext())
+    }
 
     private val viewModel: ProductsViewModel by sharedViewModel()
 
@@ -48,7 +46,6 @@ class ProductFragment : Fragment() {
     }
 
     private fun settingRecyclerView() {
-        adapter = ReviewsAdapter(requireContext())
         binding.rvReviews.adapter = adapter
         binding.rvReviews.setHasFixedSize(true)
     }

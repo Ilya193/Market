@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.kraz.market.core.EventWrapper
 import ru.kraz.market.domain.ProductsInteractor
@@ -31,6 +32,7 @@ class ProductsViewModel(
 
     fun fetchProducts() = viewModelScope.launch(Dispatchers.IO) {
         _resultProducts.postValue(ProductUiState.Loading)
+        delay(3000)
         when (val res = productsInteractor.fetchProduct()) {
             is Result.Success -> {
                 val products = res.data.map { product ->

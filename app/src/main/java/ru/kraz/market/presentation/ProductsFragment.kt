@@ -5,9 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
+import com.elveum.elementadapter.SimpleBindingAdapter
+import com.elveum.elementadapter.simpleAdapter
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import ru.kraz.market.R
 import ru.kraz.market.databinding.FragmentProductsBinding
+import ru.kraz.market.databinding.ProductLayoutBinding
 
 
 class ProductsFragment : Fragment(), OnClickListener {
@@ -15,7 +19,7 @@ class ProductsFragment : Fragment(), OnClickListener {
     private val binding: FragmentProductsBinding
         get() = _binding!!
 
-    private lateinit var adapter: ProductsAdapter
+    private lateinit var adapter: SimpleBindingAdapter<ProductUi>
 
     private val viewModel: ProductsViewModel by sharedViewModel()
 
@@ -30,13 +34,34 @@ class ProductsFragment : Fragment(), OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = ProductsAdapter(requireContext(), this)
+        //adapter = ProductsAdapter(requireContext(), this)
 
         settingRecyclerView()
         settingViewModel()
     }
 
     private fun settingRecyclerView() {
+        //binding.rvProducts.adapter = adapter
+        adapter = simpleAdapter<ProductUi, ProductLayoutBinding> {
+            areItemsSame = {old, new ->
+                old.id == new.id
+            }
+
+            bind { item ->
+                tvName.text = item.name
+
+                Glide.with(requireContext())
+                    .load(item.url)
+                    .centerCrop()
+                    .into(image)
+            }
+
+            listeners {
+                root.onClick {
+                    onClick(it)
+                }
+            }
+        }
         binding.rvProducts.adapter = adapter
         binding.rvProducts.setHasFixedSize(true)
     }
@@ -52,11 +77,12 @@ class ProductsFragment : Fragment(), OnClickListener {
         }
     }
 
-
     private fun renderSuccess(state: ProductUiState.Success) {
         binding.containerError.visibility = View.GONE
         binding.loading.visibility = View.GONE
 
+        binding.shimmer.stopShimmerAnimation()
+        binding.shimmer.visibility = View.GONE
         binding.rvProducts.visibility = View.VISIBLE
         adapter.submitList(state.data)
     }
@@ -65,6 +91,7 @@ class ProductsFragment : Fragment(), OnClickListener {
         binding.rvProducts.visibility = View.GONE
         binding.loading.visibility = View.GONE
 
+        binding.shimmer.stopShimmerAnimation()
         binding.containerError.visibility = View.VISIBLE
         binding.tvError.text = state.message
         binding.btnRetry.setOnClickListener {
@@ -75,8 +102,8 @@ class ProductsFragment : Fragment(), OnClickListener {
     private fun renderLoading() {
         binding.rvProducts.visibility = View.GONE
         binding.containerError.visibility = View.GONE
-
-        binding.loading.visibility = View.VISIBLE
+        binding.shimmer.startShimmerAnimation()
+        binding.shimmer.visibility = View.VISIBLE
     }
 
     override fun onClick(product: ProductUi) {

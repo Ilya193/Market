@@ -1,10 +1,10 @@
 package ru.kraz.market.presentation
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.elveum.elementadapter.SimpleBindingAdapter
 import com.elveum.elementadapter.simpleAdapter
@@ -41,7 +41,7 @@ class ProductsFragment : Fragment(), OnClickListener {
         //adapter = ProductsAdapter(requireContext(), this)
         //binding.rvProducts.adapter = adapter
         adapter = simpleAdapter<ProductUi, ProductLayoutBinding> {
-            areItemsSame = {old, new ->
+            areItemsSame = { old, new ->
                 old.id == new.id
             }
 
@@ -77,7 +77,6 @@ class ProductsFragment : Fragment(), OnClickListener {
 
     private fun renderSuccess(state: ProductUiState.Success) {
         binding.containerError.visibility = View.GONE
-        binding.loading.visibility = View.GONE
 
         binding.shimmer.stopShimmerAnimation()
         binding.shimmer.visibility = View.GONE
@@ -87,9 +86,9 @@ class ProductsFragment : Fragment(), OnClickListener {
 
     private fun renderError(state: ProductUiState.Error) {
         binding.rvProducts.visibility = View.GONE
-        binding.loading.visibility = View.GONE
 
         binding.shimmer.stopShimmerAnimation()
+        binding.shimmer.visibility = View.GONE
         binding.containerError.visibility = View.VISIBLE
         binding.tvError.text = state.message
         binding.btnRetry.setOnClickListener {

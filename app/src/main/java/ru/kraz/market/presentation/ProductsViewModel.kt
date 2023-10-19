@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.kraz.market.core.EventWrapper
 import ru.kraz.market.domain.ProductsInteractor
@@ -16,7 +15,7 @@ class ProductsViewModel(
     private val productsInteractor: ProductsInteractor,
     private val productUiMapper: BaseToProductUiMapper,
     private val reviewUiMapper: BaseToReviewUiMapper,
-    private val resourceProvider: ResourceProvider
+    private val resourceProvider: ResourceProvider,
 ) : ViewModel() {
 
     private val _currentProduct = MutableLiveData<ProductUi>()
@@ -32,7 +31,6 @@ class ProductsViewModel(
 
     fun fetchProducts() = viewModelScope.launch(Dispatchers.IO) {
         _resultProducts.postValue(ProductUiState.Loading)
-        delay(3000)
         when (val res = productsInteractor.fetchProduct()) {
             is Result.Success -> {
                 val products = res.data.map { product ->
@@ -69,24 +67,36 @@ class ProductsViewModel(
     private fun mapResultReview(result: Result<List<ReviewDomain>>) {
         when (result) {
             is Result.Success -> {
-/*                val list = mutableListOf<ReviewUi>()
-                currentProduct.value?.let {
-                    list.add(ReviewUi.Image(it.url))
-                    list.add(ReviewUi.Title(it.name))
-                    list.add(ReviewUi.Text(it.description))
-                    list.add(ReviewUi.Delimiter)
-                    list.add(ReviewUi.Section("Отзывы"))
-                }*/
+                /*                val list = mutableListOf<ReviewUi>()
+                                currentProduct.value?.let {
+                                    list.add(ReviewUi.Image(it.url))
+                                    list.add(ReviewUi.Title(it.name))
+                                    list.add(ReviewUi.Text(it.description))
+                                    list.add(ReviewUi.Delimiter)
+                                    list.add(ReviewUi.Section("Отзывы"))
+                                }*/
                 val data = result.data
                 val reviews =
                     if (data.isEmpty()) listOf(ReviewUi.Empty) else result.data.map { review ->
                         reviewUiMapper.map(review)
                     }
-                _resultReviews.postValue(EventWrapper.Single(ReviewUiState.Success(/*list + */reviews)))
+                _resultReviews.postValue(
+                    EventWrapper.Single(
+                        ReviewUiState.Success(/*list + */reviews)
+                    )
+                )
             }
 
             is Result.Error -> {
-                _resultReviews.postValue(EventWrapper.Single(ReviewUiState.Error(resourceProvider.getString(result.e))))
+                _resultReviews.postValue(
+                    EventWrapper.Single(
+                        ReviewUiState.Error(
+                            resourceProvider.getString(
+                                result.e
+                            )
+                        )
+                    )
+                )
             }
         }
     }

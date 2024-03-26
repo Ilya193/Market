@@ -1,12 +1,12 @@
 package ru.ikom.feature_menu.di
 
 import androidx.room.Room
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import ru.ikom.feature_menu.data.MealsRepositoryImpl
 import ru.ikom.feature_menu.data.cache.CacheDataSource
 import ru.ikom.feature_menu.data.cache.CacheDataSourceImpl

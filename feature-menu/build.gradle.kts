@@ -50,10 +50,9 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation(libs.kotlinxSerializationJson)
     implementation(libs.retrofit)
-    implementation(libs.okhttp)
-    implementation(libs.kotlinxSerializationConverter)
+    implementation(libs.kotlinxSerializationJson)
+    implementation(libs.converter.kotlinx.serialization)
 
     implementation(libs.koin)
     implementation(libs.coil)

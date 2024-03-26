@@ -10,22 +10,22 @@
         android:id="@+id/containerError"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tvMessageError"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/error"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
         <Button
             android:id="@+id/btnRetry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/retry"
-            android:layout_marginTop="12dp"/>
+            android:layout_marginTop="12dp"
+            android:text="@string/retry" />
 
     </LinearLayout>
 
@@ -45,9 +45,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="60dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:orientation="horizontal"
-                app:layout_collapseMode="parallax"/>
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_collapseMode="parallax" />
 
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
@@ -57,17 +57,17 @@
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
 
                 <TextView
+                    style="@style/TextAppearance.AppCompat.Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/Moscow"
-                    style="@style/TextAppearance.AppCompat.Title"
-                    android:textColor="@android:color/black"/>
+                    android:textColor="@android:color/black" />
 
                 <ImageView
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:src="@drawable/ic_vector"
-                    android:layout_marginStart="30dp"/>
+                    android:layout_marginStart="30dp"
+                    android:src="@drawable/ic_vector" />
 
             </androidx.appcompat.widget.Toolbar>
 
@@ -79,26 +79,26 @@
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
         android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="10dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/categories"
             android:layout_width="match_parent"
             android:layout_height="32dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="horizontal"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/meals"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@id/categories"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            app:layout_constraintTop_toBottomOf="@id/categories" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -106,9 +106,9 @@
         android:id="@+id/shimmer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:duration="1000"
-        android:layout_marginTop="60dp"
         android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="60dp"
+        app:duration="1000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -118,23 +118,28 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include layout="@layout/shimmer_banner_layout"/>
+            <include layout="@layout/shimmer_banner_layout" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
                 android:orientation="horizontal">
 
-                <include layout="@layout/shimmer_category_layout"/>
-                <include layout="@layout/shimmer_category_layout"/>
-                <include layout="@layout/shimmer_category_layout"/>
-                <include layout="@layout/shimmer_category_layout"/>
+                <include layout="@layout/shimmer_category_layout" />
+
+                <include layout="@layout/shimmer_category_layout" />
+
+                <include layout="@layout/shimmer_category_layout" />
+
+                <include layout="@layout/shimmer_category_layout" />
 
             </LinearLayout>
 
-            <include layout="@layout/shimmer_meal_layout"/>
-            <include layout="@layout/shimmer_meal_layout"/>
-            <include layout="@layout/shimmer_meal_layout"/>
+            <include layout="@layout/shimmer_meal_layout" />
+
+            <include layout="@layout/shimmer_meal_layout" />
+
+            <include layout="@layout/shimmer_meal_layout" />
 
         </LinearLayout>
 

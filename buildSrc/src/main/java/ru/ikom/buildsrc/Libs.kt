@@ -22,5 +22,5 @@ object Versions {
     const val kotlinxSerializationJson = "1.6.0"
     const val coil = "2.5.0"
     const val shimmer = "0.5.0"
-    const val room = "2.6.1"
+    const val room = "2.5.0"
 }

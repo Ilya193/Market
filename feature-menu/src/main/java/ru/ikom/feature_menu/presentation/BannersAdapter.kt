@@ -2,9 +2,6 @@ package ru.ikom.feature_menu.presentation
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import ru.ikom.common.BaseDiffUtil
 import ru.ikom.common.BaseListAdapter

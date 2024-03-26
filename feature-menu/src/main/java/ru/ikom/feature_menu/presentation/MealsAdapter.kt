@@ -15,6 +15,7 @@ class MealsAdapter: BaseListAdapter<MealUi, MealsAdapter.ViewHolder>(DiffMeals()
         override fun bind(item: MealUi) {
             view.imageMeal.load(item.strMealThumb) {
                 transformations(CircleCropTransformation())
+                crossfade(true)
             }
             view.tvNameMeal.text = item.strMeal
             view.tvDescriptionMeal.text = item.strMeal

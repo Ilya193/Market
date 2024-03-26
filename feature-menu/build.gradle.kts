@@ -51,7 +51,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(libs.retrofit)
-    implementation(libs.kotlinxSerializationJson)
+    implementation(libs.kotlinx.serialization.json)
     implementation(libs.converter.kotlinx.serialization)
 
     implementation(libs.koin)
@@ -59,8 +59,8 @@ dependencies {
 
     implementation(libs.shimmer)
 
-    implementation(libs.roomRuntime)
-    annotationProcessor(libs.roomCompiler)
-    ksp(libs.roomCompiler)
-    implementation(libs.roomKtx)
+    implementation(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
+    ksp(libs.room.compiler)
+    implementation(libs.room.ktx)
 }

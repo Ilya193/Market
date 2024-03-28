@@ -38,7 +38,8 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
+            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
+            android:background="@color/toolbar">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/banners"
@@ -54,14 +55,14 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:menu="@menu/menu"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
+                android:background="@color/toolbar">
 
                 <TextView
                     style="@style/TextAppearance.AppCompat.Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/Moscow"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@color/title"/>
 
                 <ImageView
                     android:layout_width="15dp"

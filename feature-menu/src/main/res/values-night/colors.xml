@@ -3,7 +3,7 @@
 
     <color name="textColorCard">#FD3A69</color>
     <color name="colorCard">#F4CDD6</color>
-    <color name="title">#000000</color>
-    <color name="toolbar">#ffffff</color>
+    <color name="title">#ffffff</color>
+    <color name="toolbar">#000000</color>
 
 </resources>

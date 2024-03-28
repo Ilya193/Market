@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.launch
@@ -38,27 +39,25 @@ class MenuFragment : Fragment() {
         binding.meals.adapter = mealsAdapter
 
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect {
-                    binding.appBarLayout.visibility = if (it is MenuUiState.Success) View.VISIBLE else View.GONE
-                    binding.content.visibility = if (it is MenuUiState.Success) View.VISIBLE else View.GONE
-                    binding.shimmer.visibility = if (it is MenuUiState.Loading) View.VISIBLE else View.GONE
-                    binding.containerError.visibility = if (it is MenuUiState.Error) View.VISIBLE else View.GONE
-                    binding.tvMessageError.text = if (it is MenuUiState.Error) getString(it.msg) else ""
+            viewModel.uiState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).collect {
+                binding.appBarLayout.visibility = if (it is MenuUiState.Success) View.VISIBLE else View.GONE
+                binding.content.visibility = if (it is MenuUiState.Success) View.VISIBLE else View.GONE
+                binding.shimmer.visibility = if (it is MenuUiState.Loading) View.VISIBLE else View.GONE
+                binding.containerError.visibility = if (it is MenuUiState.Error) View.VISIBLE else View.GONE
+                binding.tvMessageError.text = if (it is MenuUiState.Error) getString(it.msg) else ""
 
-                    if (it is MenuUiState.Loading) binding.shimmer.startShimmer()
-                    else binding.shimmer.stopShimmer()
+                if (it is MenuUiState.Loading) binding.shimmer.startShimmer()
+                else binding.shimmer.stopShimmer()
 
-                    if (it is MenuUiState.Success) {
-                        bannersAdapter.submitList(it.banners)
-                        categoriesAdapter.submitList(it.categories)
-                        mealsAdapter.submitList(it.meals)
-                    }
+                if (it is MenuUiState.Success) {
+                    bannersAdapter.submitList(it.banners)
+                    categoriesAdapter.submitList(it.categories)
+                    mealsAdapter.submitList(it.meals)
+                }
 
-                    if (it is MenuUiState.Error) {
-                        binding.btnRetry.setOnClickListener {
-                            viewModel.fetchMeals()
-                        }
+                if (it is MenuUiState.Error) {
+                    binding.btnRetry.setOnClickListener {
+                        viewModel.fetchMeals()
                     }
                 }
             }

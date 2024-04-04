@@ -6,5 +6,6 @@ import kotlinx.serialization.Serializable
 data class MealCloud(
     val idMeal: String,
     val strMeal: String,
-    val strMealThumb: String
+    val strMealThumb: String,
+    val purchased: Boolean = false
 )

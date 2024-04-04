@@ -6,8 +6,11 @@ import okhttp3.MediaType.Companion.toMediaType
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
-import ru.ikom.meals.cache.MealsDao
-import ru.ikom.meals.cache.MealsDb
+import ru.ikom.database.MealsDb
+import ru.ikom.database.basket.BasketDao
+import ru.ikom.database.meals.MealsDao
+import ru.ikom.meals.cache.MealsCacheDataSource
+import ru.ikom.meals.cache.MealsCacheDataSourceImpl
 import ru.ikom.meals.cloud.MealsService
 
 val mealsModule = module {
@@ -19,7 +22,19 @@ val mealsModule = module {
             .create(MealsService::class.java)
     }
 
+    factory<MealsCacheDataSource> {
+        MealsCacheDataSourceImpl(get())
+    }
+
+    single<MealsDb> {
+        Room.databaseBuilder(get(), MealsDb::class.java, "meals_db").build()
+    }
+
     single<MealsDao> {
-        Room.databaseBuilder(get(), MealsDb::class.java, "meals_db").build().mealsDao()
+        get<MealsDb>().mealsDao()
+    }
+
+    single<BasketDao> {
+        get<MealsDb>().basketDao()
     }
 }

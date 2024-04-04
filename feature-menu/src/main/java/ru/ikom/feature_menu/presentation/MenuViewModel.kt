@@ -9,12 +9,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.ikom.feature_menu.domain.FetchMealsUseCase
 import ru.ikom.feature_menu.domain.LoadResult
+import ru.ikom.feature_menu.domain.UpdateMealUseCase
 import ru.ikom.feature_menu.presentation.Mappers.getData
 import ru.ikom.feature_menu.presentation.Mappers.toMealUi
 
 class MenuViewModel(
     private val router: MenuRouter,
     private val fetchMealsUseCase: FetchMealsUseCase,
+    private val updateMealUseCase: UpdateMealUseCase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ViewModel() {
 
@@ -63,6 +65,13 @@ class MenuViewModel(
         }
     }
 
+    fun buy(index: Int) = viewModelScope.launch(dispatcher) {
+        val item = meals[index]
+        meals[index] = item.copy(purchased = !item.purchased)
+        updateMealUseCase(meals[index].toMealDomain())
+        _uiState.value = MenuUiState.Success(banners.toList(), categories.toList(), meals.toList())
+    }
+
     fun coup() = router.coup()
 }
 
@@ -73,6 +82,6 @@ sealed interface MenuUiState {
     data class Success(
         val banners: List<BannerUi>,
         val categories: List<CategoryUi>,
-        val meals: List<MealUi>,
+        val meals: List<MealUi>
     ) : MenuUiState
 }

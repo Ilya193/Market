@@ -32,7 +32,7 @@ class MenuFragment : Fragment() {
 
         val bannersAdapter = BannersAdapter()
         val categoriesAdapter = CategoriesAdapter(click = viewModel::changeCategory)
-        val mealsAdapter = MealsAdapter()
+        val mealsAdapter = MealsAdapter(viewModel::buy)
 
         binding.banners.adapter = bannersAdapter
         binding.categories.adapter = categoriesAdapter

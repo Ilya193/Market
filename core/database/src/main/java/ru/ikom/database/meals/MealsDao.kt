@@ -1,9 +1,8 @@
-package ru.ikom.meals.cache
+package ru.ikom.database.meals
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import ru.ikom.meals.cache.MealCache
 
 @Dao
 interface MealsDao {

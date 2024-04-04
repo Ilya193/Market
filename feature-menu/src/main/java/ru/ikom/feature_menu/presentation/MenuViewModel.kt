@@ -4,14 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.ikom.feature_menu.domain.FetchMealsUseCase
 import ru.ikom.feature_menu.domain.LoadResult
-import ru.ikom.feature_menu.presentation.Utils.getData
-import ru.ikom.feature_menu.presentation.Utils.toMealUi
+import ru.ikom.feature_menu.presentation.Mappers.getData
+import ru.ikom.feature_menu.presentation.Mappers.toMealUi
 
 class MenuViewModel(
     private val router: MenuRouter,

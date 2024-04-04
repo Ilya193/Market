@@ -1,4 +1,6 @@
-package ru.ikom.feature_menu.data.cache
+package ru.ikom.meals.cache
+
+import ru.ikom.meals.cache.MealCache
 
 interface CacheDataSource {
     suspend fun fetchMeals(): List<MealCache>

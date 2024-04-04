@@ -4,7 +4,7 @@ import ru.ikom.feature_menu.R
 import ru.ikom.feature_menu.domain.ErrorType
 import ru.ikom.feature_menu.domain.MealDomain
 
-object Utils {
+object Mappers {
     fun MealDomain.toMealUi(): MealUi =
         MealUi(idMeal, strMeal, strMealThumb)
 

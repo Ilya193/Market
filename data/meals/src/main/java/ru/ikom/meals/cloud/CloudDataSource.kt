@@ -1,4 +1,4 @@
-package ru.ikom.feature_menu.data.cloud
+package ru.ikom.meals.cloud
 
 interface CloudDataSource {
     suspend fun fetchMeals(): MealsCloud

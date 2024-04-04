@@ -12,9 +12,9 @@ import org.junit.runner.RunWith
 
 import org.junit.Assert.*
 import org.junit.Before
-import ru.ikom.feature_menu.data.cache.MealCache
-import ru.ikom.feature_menu.data.cache.MealsDao
-import ru.ikom.feature_menu.data.cache.MealsDb
+import ru.ikom.meals.cache.MealCache
+import ru.ikom.meals.cache.MealsDao
+import ru.ikom.meals.cache.MealsDb
 
 /**
  * Instrumented test, which will execute on an Android device.

@@ -1,4 +1,4 @@
-package ru.ikom.feature_menu.data.cache
+package ru.ikom.meals.cache
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

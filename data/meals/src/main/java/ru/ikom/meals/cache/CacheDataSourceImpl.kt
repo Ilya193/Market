@@ -1,4 +1,4 @@
-package ru.ikom.feature_menu.data.cache
+package ru.ikom.meals.cache
 
 class CacheDataSourceImpl(
     private val dao: MealsDao,

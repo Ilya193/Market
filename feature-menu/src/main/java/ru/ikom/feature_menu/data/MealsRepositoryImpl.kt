@@ -3,7 +3,6 @@ package ru.ikom.feature_menu.data
 import ru.ikom.basket.MealsBasketCacheDataSource
 import ru.ikom.feature_menu.data.Mappers.toMealBasketData
 import ru.ikom.feature_menu.data.Mappers.toMealDomain
-import ru.ikom.feature_menu.data.Mappers.toMealsData
 import ru.ikom.feature_menu.domain.ErrorType
 import ru.ikom.feature_menu.domain.LoadResult
 import ru.ikom.feature_menu.domain.MealDomain
@@ -19,7 +18,7 @@ class MealsRepositoryImpl(
 ) : MealsRepository {
     override suspend fun fetchMeals(): LoadResult<List<MealDomain>> {
         return try {
-            val meals = cloudDataSource.fetchMeals().toMealsData()
+            val meals = cloudDataSource.fetchMeals()
             mealsCacheDataSource.delete()
             mealsCacheDataSource.addMeals(meals)
             val mealsBasket = mealsBasketCacheDataSource.fetchMeals()

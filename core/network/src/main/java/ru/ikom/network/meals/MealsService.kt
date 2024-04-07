@@ -1,4 +1,4 @@
-package ru.ikom.meals.cloud
+package ru.ikom.network.meals
 
 import retrofit2.http.GET
 

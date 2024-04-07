@@ -24,10 +24,6 @@ val featureMenuModule = module {
     includes(mealsModule)
     includes(mealsBasketModule)
 
-    factory<CloudDataSource> {
-        CloudDataSourceImpl(get())
-    }
-
     factory<MealsRepository> {
         MealsRepositoryImpl(get(), get(), get())
     }

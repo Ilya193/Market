@@ -18,11 +18,12 @@
         android:id="@+id/icPurchased"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:src="@drawable/ic_shopping_cart"
+        android:src="@drawable/ic_basket"
         android:layout_margin="8dp"
         app:layout_constraintStart_toEndOf="@id/imageMeal"
         app:layout_constraintBottom_toBottomOf="@id/imageMeal"
-        app:layout_constraintTop_toTopOf="@id/btnOrder"/>
+        app:layout_constraintTop_toTopOf="@id/btnOrder"
+        app:tint="@color/textColorCard" />
 
     <TextView
         android:id="@+id/tvNameMeal"

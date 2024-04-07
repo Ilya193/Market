@@ -11,7 +11,9 @@ import ru.ikom.database.basket.BasketDao
 import ru.ikom.database.meals.MealsDao
 import ru.ikom.meals.cache.MealsCacheDataSource
 import ru.ikom.meals.cache.MealsCacheDataSourceImpl
-import ru.ikom.meals.cloud.MealsService
+import ru.ikom.meals.cloud.CloudDataSource
+import ru.ikom.meals.cloud.CloudDataSourceImpl
+import ru.ikom.network.meals.MealsService
 
 val mealsModule = module {
     single<MealsService> {
@@ -24,6 +26,10 @@ val mealsModule = module {
 
     factory<MealsCacheDataSource> {
         MealsCacheDataSourceImpl(get())
+    }
+
+    factory<CloudDataSource> {
+        CloudDataSourceImpl(get())
     }
 
     single<MealsDb> {

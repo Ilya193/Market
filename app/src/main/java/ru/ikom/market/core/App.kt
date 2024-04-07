@@ -7,6 +7,7 @@ import coil.disk.DiskCache
 import coil.util.DebugLogger
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
+import ru.ikom.feature_basket.di.featureBasketModule
 import ru.ikom.feature_menu.di.featureMenuModule
 
 class App : Application(), ImageLoaderFactory {
@@ -15,7 +16,7 @@ class App : Application(), ImageLoaderFactory {
         super.onCreate()
         startKoin {
             androidContext(this@App)
-            modules(appModule, featureMenuModule)
+            modules(appModule, featureMenuModule, featureBasketModule)
         }
     }
 

@@ -14,17 +14,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/icPurchased"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:src="@drawable/ic_basket"
-        android:layout_margin="8dp"
-        app:layout_constraintStart_toEndOf="@id/imageMeal"
-        app:layout_constraintBottom_toBottomOf="@id/imageMeal"
-        app:layout_constraintTop_toTopOf="@id/btnOrder"
-        app:tint="@color/textColorCard" />
-
     <TextView
         android:id="@+id/tvNameMeal"
         android:layout_width="0dp"
@@ -45,25 +34,24 @@
         app:layout_constraintStart_toStartOf="@id/tvNameMeal"
         app:layout_constraintTop_toBottomOf="@id/tvNameMeal" />
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/btnOrder"
+    <TextView
+        android:id="@+id/tvPrice"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="за 345 р"
+        android:textColor="@color/textColorCard"
+        android:layout_marginStart="12dp"
+        app:layout_constraintStart_toEndOf="@id/imageMeal"
+        app:layout_constraintBottom_toBottomOf="@id/imageMeal" />
+
+    <ImageView
+        android:id="@+id/ivRemove"
+        android:layout_width="35dp"
         android:layout_height="32dp"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/ic_remove"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintBottom_toBottomOf="@id/tvPrice"
         app:layout_constraintEnd_toEndOf="parent"
-        app:strokeColor="@color/textColorCard">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="В корзину за 345 р"
-            android:textSize="12sp"
-            android:paddingHorizontal="4dp"
-            android:textColor="@color/textColorCard" />
-
-    </com.google.android.material.card.MaterialCardView>
+        app:layout_constraintTop_toTopOf="@id/tvPrice"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,9 +10,6 @@ object Mappers {
     fun MealCache.toMealData(): MealData =
         MealData(idMeal, strMeal, strMealThumb, purchased)
 
-    fun MealBasketCache.toMealData(): MealData =
-        MealData(idMeal, strMeal, strMealThumb, purchased)
-
     fun MealCloud.toMealData(): MealData =
         MealData(idMeal, strMeal, strMealThumb, purchased)
 

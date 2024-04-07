@@ -30,19 +30,22 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             launch {
-                viewModel.readScreen().flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).collect {
-                    viewModel.readScreen().collect {
-                        it.show(supportFragmentManager, R.id.fragmentContainer)
+                viewModel.readScreen().flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+                    .collect {
+                        viewModel.readScreen().collect {
+                            it.show(supportFragmentManager, R.id.fragmentContainer)
+                        }
                     }
-                }
             }
             launch {
                 viewModel.uiState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).collect {
                     if (it == 0) binding.bottomNav.removeBadge(R.id.basket)
                     else {
                         val badge = binding.bottomNav.getOrCreateBadge(R.id.basket)
-                        badge.badgeTextColor = ContextCompat.getColor(this@MainActivity, R.color.white)
-                        badge.backgroundColor = ContextCompat.getColor(this@MainActivity, R.color.colorPrimary)
+                        badge.badgeTextColor =
+                            ContextCompat.getColor(this@MainActivity, R.color.white)
+                        badge.backgroundColor =
+                            ContextCompat.getColor(this@MainActivity, R.color.colorPrimary)
                         badge.number = it
                     }
                 }
@@ -52,10 +55,12 @@ class MainActivity : AppCompatActivity() {
         viewModel.readBasket()
 
         binding.bottomNav.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.menu -> launchFragment(MenuFragment.newInstance())
-                R.id.profile -> {}
-                R.id.basket -> launchFragment(BasketFragment.newInstance())
+            if (binding.bottomNav.selectedItemId != it.itemId) {
+                when (it.itemId) {
+                    R.id.menu -> launchFragment(MenuFragment.newInstance())
+                    R.id.profile -> {}
+                    R.id.basket -> launchFragment(BasketFragment.newInstance())
+                }
             }
             true
         }

@@ -42,10 +42,8 @@ class MainActivity : AppCompatActivity() {
                     if (it == 0) binding.bottomNav.removeBadge(R.id.basket)
                     else {
                         val badge = binding.bottomNav.getOrCreateBadge(R.id.basket)
-                        badge.badgeTextColor =
-                            ContextCompat.getColor(this@MainActivity, R.color.white)
-                        badge.backgroundColor =
-                            ContextCompat.getColor(this@MainActivity, R.color.colorPrimary)
+                        badge.badgeTextColor = ContextCompat.getColor(this@MainActivity, R.color.white)
+                        badge.backgroundColor = ContextCompat.getColor(this@MainActivity, R.color.colorPrimary)
                         badge.number = it
                     }
                 }

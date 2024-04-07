@@ -25,8 +25,8 @@ class MainViewModel(
     fun readScreen(): StateFlow<Screen> = navigation.read()
 
     fun readBasket() = viewModelScope.launch(dispatcher) {
-        dao.fetchMealsWithFlow().collect {
-            _uiState.value = it.size
+        dao.fetchMealsSize().collect {
+            _uiState.value = it
         }
     }
 }

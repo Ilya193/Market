@@ -11,8 +11,8 @@ interface BasketDao {
     @Query("SELECT * FROM baskets")
     suspend fun fetchMeals(): List<MealBasketCache>
 
-    @Query("SELECT * FROM baskets")
-    fun fetchMealsWithFlow(): Flow<List<MealBasketCache>>
+    @Query("SELECT COUNT(*) FROM baskets")
+    fun fetchMealsSize(): Flow<Int>
 
     @Insert
     suspend fun add(meal: MealBasketCache)

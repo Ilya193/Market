@@ -54,7 +54,6 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(libs.koin)
-
     implementation(libs.coil)
-
+    implementation(libs.androidx.core.splashscreen)
 }

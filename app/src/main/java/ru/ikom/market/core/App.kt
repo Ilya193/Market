@@ -22,6 +22,7 @@ class App : Application(), ImageLoaderFactory {
 
     override fun newImageLoader(): ImageLoader {
         return ImageLoader(this).newBuilder()
+            .crossfade(true)
             .diskCache {
                 DiskCache.Builder()
                     .maxSizePercent(0.02)

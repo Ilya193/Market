@@ -3,11 +3,12 @@ package ru.ikom.database.meals
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MealsDao {
     @Query("SELECT * FROM meals")
-    suspend fun fetchMeals(): List<MealCache>
+    fun fetchMeals(): Flow<List<MealCache>>
 
     @Insert
     suspend fun addMeals(meals: List<MealCache>)

@@ -12,12 +12,8 @@ class MealsBasketRepositoryImpl(
     private val mealsBasketCacheDataSource: MealsBasketCacheDataSource
 ) : MealsBasketRepository {
     override suspend fun fetchMealsBasket(): LoadResult<List<MealDomain>> {
-        return try {
-            val meals = mealsBasketCacheDataSource.fetchMeals()
-            LoadResult.Success(meals.map { it.toMealDomain() })
-        } catch (e: Exception) {
-            LoadResult.Error(ErrorType.GENERIC_ERROR)
-        }
+        val meals = mealsBasketCacheDataSource.fetchMeals()
+        return LoadResult.Success(meals.map { it.toMealDomain() })
     }
 
     override suspend fun delete(meal: MealDomain) {

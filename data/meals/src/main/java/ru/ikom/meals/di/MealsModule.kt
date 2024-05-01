@@ -15,6 +15,7 @@ import ru.ikom.meals.cloud.CloudDataSource
 import ru.ikom.meals.cloud.CloudDataSourceImpl
 import ru.ikom.network.meals.MealsService
 
+
 val mealsModule = module {
     single<MealsService> {
         Retrofit.Builder()

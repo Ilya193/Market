@@ -41,17 +41,50 @@ class MenuViewModel(
     private val _uiState = MutableStateFlow<MenuUiState>(MenuUiState.Loading)
     val uiState: StateFlow<MenuUiState> get() = _uiState
 
+    init {
+        fetchMeals()
+    }
+
+    fun reconnected() = viewModelScope.launch(dispatcher) {
+        if (meals.isEmpty()) fetchMeals()
+    }
+
     fun fetchMeals() = viewModelScope.launch(dispatcher) {
         _uiState.value = MenuUiState.Loading
-        when (val res = fetchMealsUseCase()) {
-            is LoadResult.Success -> {
-                meals = res.data.map { it.toMealUi() }.toMutableList()
-                _uiState.value =
-                    MenuUiState.Success(banners.toList(), categories.toList(), meals.toList())
-            }
+        fetchMealsUseCase().collect { result ->
+            when (result) {
+                is LoadResult.Success -> {
+                    meals = result.data.map { it.toMealUi() }.toMutableList()
+                    _uiState.value =
+                        MenuUiState.Success(banners.toList(), categories.toList(), meals.toList())
+                }
 
-            is LoadResult.Error -> _uiState.value = MenuUiState.Error(res.e.getData())
+                is LoadResult.Loading -> {
+                    if (result.data.isNotEmpty()) {
+                        meals = result.data.map { it.toMealUi() }.toMutableList()
+                        _uiState.value = MenuUiState.Success(
+                            banners.toList(),
+                            categories.toList(),
+                            meals.toList(),
+                            LoadInformation.Loading
+                        )
+                    }
+                }
+
+                is LoadResult.Error -> {
+                    if (result.data.isNotEmpty()) {
+                        meals = result.data.map { it.toMealUi() }.toMutableList()
+                        _uiState.value = MenuUiState.Success(
+                            banners.toList(),
+                            categories.toList(),
+                            meals.toList(),
+                            LoadInformation.Error(result.e.getData())
+                        )
+                    } else _uiState.value = MenuUiState.Error(result.e.getData())
+                }
+            }
         }
+
     }
 
     fun changeCategory(index: Int) = viewModelScope.launch(dispatcher) {
@@ -61,8 +94,7 @@ class MenuViewModel(
                 if (categories[i] == item) categories[i] = categories[i].copy(selected = true)
                 else categories[i] = categories[i].copy(selected = false)
             }
-            _uiState.value =
-                MenuUiState.Success(banners.toList(), categories.toList(), meals.toList())
+            _uiState.value = MenuUiState.Success(banners.toList(), categories.toList(), meals.toList())
         }
     }
 
@@ -83,6 +115,12 @@ sealed interface MenuUiState {
     data class Success(
         val banners: List<BannerUi>,
         val categories: List<CategoryUi>,
-        val meals: List<MealUi>
+        val meals: List<MealUi>,
+        val loadInformation: LoadInformation? = null
     ) : MenuUiState
+}
+
+sealed interface LoadInformation {
+    data object Loading : LoadInformation
+    data class Error(val msg: Int) : LoadInformation
 }

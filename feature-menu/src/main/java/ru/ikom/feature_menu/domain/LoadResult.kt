@@ -6,8 +6,13 @@ sealed class LoadResult<out T> {
         val data: T
     ): LoadResult<T>()
 
-    data class Error(
+    data class Loading<T>(
+        val data: T
+    ): LoadResult<T>()
+
+    data class Error<T>(
+        val data: T,
         val e: ErrorType
-    ): LoadResult<Nothing>()
+    ): LoadResult<T>()
 
 }

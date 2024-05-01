@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import ru.ikom.common.Router
 import ru.ikom.feature_basket.domain.FetchMealsBasketUseCase
 import ru.ikom.feature_basket.domain.LoadResult
 import ru.ikom.feature_basket.presentation.Mappers.getData
@@ -15,10 +16,11 @@ import ru.ikom.feature_basket.presentation.Mappers.toMealDomain
 import ru.ikom.feature_basket.presentation.Mappers.toMealUi
 
 class BasketViewModel(
+    private val router: BasketRouter,
     private val fetchMealsBasketUseCase: FetchMealsBasketUseCase,
     private val deleteMealUseCase: DeleteMealUseCase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
-) : ViewModel() {
+) : ViewModel(), Router {
 
     private val _uiState = MutableStateFlow<BasketUiState>(BasketUiState.Loading)
     val uiState: StateFlow<BasketUiState> get() = _uiState.asStateFlow()
@@ -40,6 +42,8 @@ class BasketViewModel(
         deleteMealUseCase(meals[index].toMealDomain())
         fetchMeals()
     }
+
+    override fun coup() = router.coup()
 }
 
 sealed interface BasketUiState {

@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import ru.ikom.common.Router
 import ru.ikom.feature_menu.domain.FetchMealsUseCase
 import ru.ikom.feature_menu.domain.LoadResult
 import ru.ikom.feature_menu.domain.UpdateMealUseCase
@@ -18,7 +19,7 @@ class MenuViewModel(
     private val fetchMealsUseCase: FetchMealsUseCase,
     private val updateMealUseCase: UpdateMealUseCase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
-) : ViewModel() {
+) : ViewModel(), Router {
 
     private val banners = mutableListOf<BannerUi>().apply {
         addAll((0..5).map { BannerUi(it) })
@@ -72,7 +73,7 @@ class MenuViewModel(
         _uiState.value = MenuUiState.Success(banners.toList(), categories.toList(), meals.toList())
     }
 
-    fun coup() = router.coup()
+    override fun coup() = router.coup()
 }
 
 sealed interface MenuUiState {

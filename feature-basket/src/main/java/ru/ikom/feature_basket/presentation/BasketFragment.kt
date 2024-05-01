@@ -10,21 +10,15 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.ikom.common.BaseFragment
+import ru.ikom.common.Router
 import ru.ikom.feature_basket.databinding.FragmentBasketBinding
 
-class BasketFragment : Fragment() {
-    private var _binding: FragmentBasketBinding? = null
-    private val binding: FragmentBasketBinding get() = _binding!!
+class BasketFragment : BaseFragment<FragmentBasketBinding, BasketViewModel>() {
+    override val viewModel: BasketViewModel by viewModel()
 
-    private val viewModel: BasketViewModel by viewModel()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentBasketBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    override fun bind(inflater: LayoutInflater, container: ViewGroup?): FragmentBasketBinding =
+        FragmentBasketBinding.inflate(inflater, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -52,11 +46,6 @@ class BasketFragment : Fragment() {
         }
 
         viewModel.fetchMeals()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     companion object {

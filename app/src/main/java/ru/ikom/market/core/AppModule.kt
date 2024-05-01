@@ -2,6 +2,7 @@ package ru.ikom.market.core
 
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import ru.ikom.feature_basket.presentation.BasketRouter
 import ru.ikom.feature_menu.presentation.MenuRouter
 import ru.ikom.market.presentation.MainViewModel
 import ru.ikom.market.presentation.Navigation
@@ -15,6 +16,10 @@ val appModule = module {
     }
 
     single<MenuRouter> {
+        navigation
+    }
+
+    single<BasketRouter> {
         navigation
     }
 

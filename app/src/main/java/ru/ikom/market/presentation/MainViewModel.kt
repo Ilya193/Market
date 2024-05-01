@@ -13,7 +13,7 @@ class MainViewModel(
     private val navigation: Navigation<Screen>,
     private val dao: BasketDao,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
-) : ViewModel() {
+) : ViewModel(), MainRouter {
 
     private val _uiState = MutableStateFlow(0)
     val uiState: StateFlow<Int> get() = _uiState
@@ -29,4 +29,10 @@ class MainViewModel(
             _uiState.value = it
         }
     }
+
+    override fun openMenu() = navigation.openMenu()
+
+    override fun openBasket() = navigation.openBasket()
+
+    override fun coup() = navigation.coup()
 }

@@ -22,6 +22,6 @@ val featureBasketModule = module {
     }
 
     viewModel<BasketViewModel> {
-        BasketViewModel(get(), get())
+        BasketViewModel(get(), get(), get())
     }
 }

@@ -1,9 +1,11 @@
 package ru.ikom.market.presentation
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.lifecycle.Lifecycle
@@ -15,6 +17,7 @@ import ru.ikom.feature_basket.presentation.BasketFragment
 import ru.ikom.feature_menu.presentation.MenuFragment
 import ru.ikom.market.R
 import ru.ikom.market.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy {
@@ -57,18 +60,12 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNav.setOnItemSelectedListener {
             if (binding.bottomNav.selectedItemId != it.itemId) {
                 when (it.itemId) {
-                    R.id.menu -> launchFragment(MenuFragment.newInstance())
+                    R.id.menu -> viewModel.openMenu()
                     R.id.profile -> {}
-                    R.id.basket -> launchFragment(BasketFragment.newInstance())
+                    R.id.basket -> viewModel.openBasket()
                 }
             }
             true
-        }
-    }
-
-    private fun launchFragment(fragment: Fragment) {
-        supportFragmentManager.commit {
-            replace(R.id.fragmentContainer, fragment)
         }
     }
 }

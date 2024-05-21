@@ -41,7 +41,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuViewModel>() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             launch {
-                viewModel.uiState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).collect { state ->
+                viewModel.uiState.flowWithLifecycle(lifecycle).collect { state ->
                     binding.appBarLayout.visibility = if (state is MenuUiState.Success) View.VISIBLE else View.GONE
                     binding.content.visibility = if (state is MenuUiState.Success) View.VISIBLE else View.GONE
                     binding.shimmer.visibility = if (state is MenuUiState.Loading) View.VISIBLE else View.GONE
@@ -53,7 +53,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, MenuViewModel>() {
 
                     if (state is MenuUiState.Error) {
                         launch {
-                            requireContext().hasNetwork.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).collect {
+                            requireContext().hasNetwork.flowWithLifecycle(lifecycle).collect {
                                 viewModel.reconnected()
                             }
                         }

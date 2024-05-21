@@ -49,7 +49,7 @@ class MenuViewModel(
         if (meals.isEmpty()) fetchMeals()
     }
 
-    fun fetchMeals() = viewModelScope.launch(dispatcher) {
+    private fun fetchMeals() = viewModelScope.launch(dispatcher) {
         _uiState.value = MenuUiState.Loading
         fetchMealsUseCase().collect { result ->
             when (result) {

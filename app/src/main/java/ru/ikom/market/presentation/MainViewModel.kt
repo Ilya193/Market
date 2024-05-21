@@ -18,17 +18,19 @@ class MainViewModel(
     private val _uiState = MutableStateFlow(0)
     val uiState: StateFlow<Int> get() = _uiState
 
+    init {
+        viewModelScope.launch(dispatcher) {
+            dao.fetchMealsSize().collect {
+                _uiState.value = it
+            }
+        }
+    }
+
     fun init(first: Boolean) {
         if (first) navigation.update(MenuScreen())
     }
 
     fun readScreen(): StateFlow<Screen> = navigation.read()
-
-    fun readBasket() = viewModelScope.launch(dispatcher) {
-        dao.fetchMealsSize().collect {
-            _uiState.value = it
-        }
-    }
 
     override fun openMenu() = navigation.openMenu()
 

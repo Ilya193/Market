@@ -35,15 +35,14 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             launch {
-                viewModel.readScreen().flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-                    .collect {
-                        viewModel.readScreen().collect {
-                            it.show(supportFragmentManager, R.id.fragmentContainer)
-                        }
+                viewModel.readScreen().flowWithLifecycle(lifecycle).collect {
+                    viewModel.readScreen().collect {
+                        it.show(supportFragmentManager, R.id.fragmentContainer)
                     }
+                }
             }
             launch {
-                viewModel.uiState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).collect {
+                viewModel.uiState.flowWithLifecycle(lifecycle).collect {
                     if (it == 0) binding.bottomNav.removeBadge(R.id.basket)
                     else {
                         val badge = binding.bottomNav.getOrCreateBadge(R.id.basket)
@@ -54,8 +53,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-        viewModel.readBasket()
 
         binding.bottomNav.setOnItemSelectedListener {
             if (binding.bottomNav.selectedItemId != it.itemId) {
